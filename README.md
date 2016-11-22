@@ -39,7 +39,7 @@ You use the Conversation tool to create workspaces. You can either create a new 
 </ol>
 
 
-<h2 id="creating-an-intent">Creating an intent </h2>
+<h3>Creating an intent </h3>
 <p>You use the Conversation tool to create intents. The number of intents and examples you can create in a single service instance depends on your Conversation service plan:</p>
 
 <p>Create some intents.</p>
@@ -77,7 +77,7 @@ You use the Conversation tool to create workspaces. You can either create a new 
 <p>When you have finished adding examples, click <strong>Create</strong> to finish creating the intent.</p>
 </li>
 </ol>
-<h3 class="toc-ignore" id="results">Results</h3>
+<h3>Results</h3>
 <p>The intent you created is added to the Intents tab, and the system begins to train itself on the new data.</p>
 <p>You can click any intent in the list to open it for editing. You can make the following changes:</p>
 <ul>
@@ -89,7 +89,7 @@ You use the Conversation tool to create workspaces. You can either create a new 
 <p>To move an example, select the example by clicking the check box and then click <strong>Move to</strong>.</p>
 <p><img src="https://github.com/VidyasagarMSC/WatBot/blob/initial/Images/move_example.png" alt="Screen capture showing how to move an example"></p>
 
-<h2 id="testing-your-intents">Testing your intents </h2>
+<h3>Testing your intents </h3>
 <p>After you have finished creating new intents, you can test the system to see if it recognizes your intents as you expect.</p>
 <ol>
 <li>
@@ -114,6 +114,44 @@ You use the Conversation tool to create workspaces. You can either create a new 
 </li>
 </ol>
 
-   
+<h3>Creating an entity </h3>
+<p>You use the Conversation tool to create entities. The number of entities, entity values, and synonyms you can create in a single service instance depends on your Conversation service plan:</p>
+<ol>
+<li>
+<p>In the Conversation tool, open your workspace and then click the <strong>Entities</strong> tab.</p>
+</li>
+<li>
+<p>Click <strong>Create new</strong>.</p>
+</li>
+<li>
+<p>In the <strong>Add the entity name</strong> field, type a descriptive name for the entity.</p>
+<p>The entity name can contain letters (in Unicode), numbers, underscores, and hyphens. For example:</p>
+<ul>
+<li><code>@location</code></li>
+<li><code>@menu_item</code></li>
+<li><code>@product</code></li>
+</ul>
+<p><strong>Tips</strong>:</p>
+<ul>
+<li>Don’t include the <code>@</code> character in the entity names when you create them in the Conversation tool.</li>
+<li>Entity names can’t contain spaces or be longer than 64 characters. And entity names can’t begin with the string <code>sys-</code>, which is reserved for system entities.</li>
+</ul>
+</li>
+<li>
+<p>In the <strong>Value</strong> field, type the text of a possible value for the intent. An entity value can be any string up to 64 characters in length.</p>
+<p><strong>Important</strong>: Don’t include sensitive or personal information in entity names or values. The names and values can be exposed in URLs in an app.</p>
+</li>
+<li>
+<p>In the <strong>Synonyms</strong> field, type any synonyms for the entity value. A synonym can be any string up to 64 characters in length. Press Enter to save each synonym.</p>
+<p><img src="https://github.com/VidyasagarMSC/WatBot/blob/initial/Images/define_entity.png" alt="Screen capture of defining an entity"></p>
+</li>
+<li>
+<p>Click <strong>+</strong> and repeat the process to add more entity values.</p>
+</li>
+<li>
+<p>When you are finished adding values and synonyms, click <strong>Create</strong>.</p>
+</li>
+</ol>
+
 
  
