@@ -152,6 +152,12 @@ You use the Conversation tool to create workspaces. You can either create a new 
 <p>When you are finished adding values and synonyms, click <strong>Create</strong>.</p>
 </li>
 </ol>
+### Building a Dialog
+The dialog component of the Conversation service uses the intents and entities that are identified in the user’s input to gather required information and provide a useful response. Your dialog is represented graphically as a tree; create a branch to process each intent that you define.
 
-
+ Post branching Intents and entities, this is how my Conversation Dialog on Bluemix looks like
  
+![Conversation Service on Bluemix](https://github.com/VidyasagarMSC/WatBot/blob/initial/Images/Conversation_Service_Bluemix.png)
+
+## Coding the app on Android Studio
+Android Studio The Official IDE for Android. Android Studio provides the fastest tools for building apps on every type of Android device.
