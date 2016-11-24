@@ -483,3 +483,14 @@ MessageResponse response = service.message("Your Workspace Id", newMessage).exec
 ```
 
 * Build and Run your app.
+
+## Chat with your own WatBot 
+
+If you have strictly followed all the above instructions, this is what you should see on an emulator or on a physical device. 
+
+![WatBot](https://github.com/VidyasagarMSC/WatBot/blob/initial/Images/WatBot.jpg)
+
+*Remember your bot will be talking to your Conversation Service (Intents, Entities and Dialog).
+
+### Don't stop here!!! Keep coding and using Bluemix
+
