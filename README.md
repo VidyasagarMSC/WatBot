@@ -193,7 +193,7 @@ dependencies {
 
 }
 ```
-<p>Do a gradle build</p>
+<p> Do a gradle build </p>
 
 * Once gradle build is successful, Click Project on the left pane and navigate to app -> java
 
