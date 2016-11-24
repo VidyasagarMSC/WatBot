@@ -472,9 +472,9 @@ dependencies {
 
 <p>Launch the conversation service workspace and from the options select the <strong>View details</strong>.</p>
 
-![Conversation workspace1](https://github.com/AnanthaKrish/WatBot/blob/initial/Images/workspace1.png)
+![Conversation workspace1](https://github.com/VidyasagarMSC/WatBot/blob/initial/Images/workspace1.png)
 
-![Conversation workspace2](https://github.com/AnanthaKrish/WatBot/blob/initial/Images/workspace2.png)
+![Conversation workspace2](https://github.com/VidyasagarMSC/WatBot/blob/initial/Images/workspace2.png)
 
 <p>Get the <strong>Workspace ID:</strong> and add it in the below code,</p>
 
