@@ -1,6 +1,9 @@
 # WatBot
 is an IBM Watson powered ChatBot running on Android and using Conversation Service on IBM Bluemix (an open standards, cloud platform for building, running, and managing apps and services).
 
+<p align="center"><img src="https://github.com/VidyasagarMSC/WatBot/blob/initial/Images/WatBot.png" width="350"></p>
+
+
 ## Creation of Conversation Service
 
 Watson Conversation combines a number of cognitive techniques to help you build and train a bot - defining intents and entities and crafting dialog to simulate conversation.
@@ -71,7 +74,7 @@ You use the Conversation tool to create workspaces. You can either create a new 
 </li>
 <li>
 <p>Repeat the same process to add more examples. Provide at least 5 examples for each intent. The more examples you provide, the more accurate your application can be.</p>
-<p><img src="https://github.com/VidyasagarMSC/WatBot/blob/initial/Images/define_intent.png" alt="Screen capture showing intent definition"></p>
+<p align="center"><img src="https://github.com/VidyasagarMSC/WatBot/blob/initial/Images/define_intent.png" alt="Screen capture showing intent definition"></p>
 </li>
 <li>
 <p>When you have finished adding examples, click <strong>Create</strong> to finish creating the intent.</p>
@@ -87,7 +90,7 @@ You use the Conversation tool to create workspaces. You can either create a new 
 <li>Move an example to a different intent.</li>
 </ul>
 <p>To move an example, select the example by clicking the check box and then click <strong>Move to</strong>.</p>
-<p><img src="https://github.com/VidyasagarMSC/WatBot/blob/initial/Images/move_example.png" alt="Screen capture showing how to move an example"></p>
+<p align="center"><img src="https://github.com/VidyasagarMSC/WatBot/blob/initial/Images/move_example.png" alt="Screen capture showing how to move an example"></p>
 
 <h3>Testing your intents </h3>
 <p>After you have finished creating new intents, you can test the system to see if it recognizes your intents as you expect.</p>
@@ -98,13 +101,13 @@ You use the Conversation tool to create workspaces. You can either create a new 
 <li>
 <p>In the Try it out panel, enter a question or other text string and press Enter to see which intent is recognized. If the wrong intent is recognized, you can improve your model by adding this text as an example to the correct intent.</p>
 <p><strong>Tip</strong>: If you have recently made changes in your workspace, you might see a message indicating that the system is still retraining. If you see this message, wait until training completes before testing:</p>
-<p><img src="https://github.com/VidyasagarMSC/WatBot/blob/initial/Images/training.png" alt="Screen capture showing retraining message"></p>
+<p align="center"><img src="https://github.com/VidyasagarMSC/WatBot/blob/initial/Images/training.png" alt="Screen capture showing retraining message"></p>
 <p>The response indicates which intent was recognized from your input.</p>
-<p><img src="https://github.com/VidyasagarMSC/WatBot/blob/initial/Images/test_intents.png" alt="Screen capture of testing intents"></p>
+<p align="center"><img src="https://github.com/VidyasagarMSC/WatBot/blob/initial/Images/test_intents.png" alt="Screen capture of testing intents"></p>
 </li>
 <li>
 <p>If the system did not recognize the correct intent, you can correct it. To correct the recognized intent, click the displayed intent and then select the correct intent from the list. After your correction is submitted, the system automatically retrains itself to incorporate the new data.</p>
-<p><img src="https://github.com/VidyasagarMSC/WatBot/blob/initial/Images/correct_intent.png" alt="Screen capture of correcting a recognized intent"></p>
+<p align="center"><img src="https://github.com/VidyasagarMSC/WatBot/blob/initial/Images/correct_intent.png" alt="Screen capture of correcting a recognized intent"></p>
 <p>If your intents are not being correctly recognized, consider making the following kinds of changes:</p>
 <ul>
 <li>Add the unrecognized text as an example to the correct intent.</li>
@@ -173,7 +176,7 @@ Android Studio is the Official IDE for Android. Android Studio provides the fast
 
 * Navigate to the folder where the code is downloaded and click OK
 
-![Folder location](https://github.com/VidyasagarMSC/WatBot/blob/initial/Images/Screen%20Shot%202016-11-23%20at%209.54.45%20PM.png)
+<p align="center"> <img src="https://github.com/VidyasagarMSC/WatBot/blob/initial/Images/Screen%20Shot%202016-11-23%20at%209.54.45%20PM.png" width="350"></p>
 
 * Once gradle build is successful, Click Project on the left pane and navigate to **Gradle Scripts -> build.gradle(Module: app)** and check the <strong>dependencies</strong> for following dependencies.
 
@@ -472,9 +475,10 @@ dependencies {
 
 <p>Launch the conversation service workspace and from the options select the <strong>View details</strong>.</p>
 
-![Conversation workspace1](https://github.com/VidyasagarMSC/WatBot/blob/initial/Images/workspace1.png)
-
-![Conversation workspace2](https://github.com/VidyasagarMSC/WatBot/blob/initial/Images/workspace2.png)
+<p align="center">
+<img src="https://github.com/VidyasagarMSC/WatBot/blob/initial/Images/workspace1.png" width="350"> 
+<img src="https://github.com/VidyasagarMSC/WatBot/blob/initial/Images/workspace2.png" width="350">
+</p>
 
 <p>Get the <strong>Workspace ID:</strong> and add it in the below code,</p>
 
@@ -486,11 +490,9 @@ MessageResponse response = service.message("Your Workspace Id", newMessage).exec
 
 ## Chat with your own WatBot 
 
-If you have strictly followed all the above instructions, this is what you should see on an emulator or on a physical device. 
+If you have followed all the above instructions, you should be happily chatting with your Wat(son)Bot. 
 
-![WatBot](https://github.com/VidyasagarMSC/WatBot/blob/initial/Images/WatBot.jpg)
-
-*Remember your bot will be talking to your Conversation Service (Intents, Entities and Dialog).
+** Remember your bot will be talking to your Conversation Service (Intents, Entities and Dialog).**
 
 ### Don't stop here!!! Keep coding and using Bluemix
 
