@@ -156,7 +156,7 @@ You use the Conversation tool to create workspaces. You can either create a new 
 The dialog component of the Conversation service uses the intents and entities that are identified in the user’s input to gather required information and provide a useful response. Your dialog is represented graphically as a tree; create a branch to process each intent that you define.
 
  Post branching Intents and entities, this is how my Conversation Dialog on Bluemix looks like
- 
+
 ![Conversation Service on Bluemix](https://github.com/VidyasagarMSC/WatBot/blob/initial/Images/Conversation_Service_Bluemix.png)
 
 ## Coding the app on Android Studio
@@ -164,11 +164,11 @@ Android Studio is the Official IDE for Android. Android Studio provides the fast
 
 <a href="https://github.com/VidyasagarMSC/WatBot/archive/initial.zip" target="_blank">Click here</a> to download the starter code (.Zip). UnZip the code to a folder.
 
-## Importing the code to Android Studio 
+## Importing the code to Android Studio
 * Start Android Studio and close any open Android Studio projects.
 * From the Android Studio menu click File > New > Import Project.
   * Alternatively, from the Welcome screen, click Open an existing Android Studio Project
-  
+
 ![Android Studio Import](https://github.com/VidyasagarMSC/WatBot/blob/initial/Images/Screen%20Shot%202016-11-23%20at%209.53.06%20PM.png)
 
 * Navigate to the folder where the code is downloaded and click OK
@@ -176,3 +176,288 @@ Android Studio is the Official IDE for Android. Android Studio provides the fast
 ![Folder location](https://github.com/VidyasagarMSC/WatBot/blob/initial/Images/Screen%20Shot%202016-11-23%20at%209.54.45%20PM.png)
 
 * Once gradle build is successful, Click Project on the left pane and navigate to app -> java
+
+* Go to the com.example.vmac.watbot - > MainActivity
+
+   <p>Replace the existing code with,</p>
+
+   ```
+    import android.content.Intent;
+    import android.os.Bundle;
+    import android.support.v7.app.AppCompatActivity;
+    import android.support.v7.widget.DefaultItemAnimator;
+    import android.support.v7.widget.LinearLayoutManager;
+    import android.support.v7.widget.RecyclerView;
+    import android.view.View;
+    import android.widget.EditText;
+    import android.widget.ImageButton;
+
+    import com.ibm.watson.developer_cloud.conversation.v1.ConversationService;
+    import com.ibm.watson.developer_cloud.conversation.v1.model.MessageRequest;
+    import com.ibm.watson.developer_cloud.conversation.v1.model.MessageResponse;
+
+    import java.util.ArrayList;
+
+    public class MainActivity extends AppCompatActivity {
+
+        private String chatRoomId;
+        private RecyclerView recyclerView;
+        private ChatRoomThreadAdapter mAdapter;
+        private ArrayList messageArrayList;
+        private EditText inputMessage;
+        private ImageButton btnSend;
+
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_main);
+            inputMessage = (EditText) findViewById(R.id.message);
+            btnSend = (ImageButton) findViewById(R.id.btn_send);
+
+            recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+
+            messageArrayList = new ArrayList<>();
+
+            mAdapter = new ChatRoomThreadAdapter(messageArrayList);
+
+            LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+            layoutManager.setStackFromEnd(true);
+            recyclerView.setLayoutManager(layoutManager);
+            recyclerView.setItemAnimator(new DefaultItemAnimator());
+            recyclerView.setAdapter(mAdapter);
+
+            btnSend.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v) {
+                    sendMessage();
+                }
+            });
+        };
+
+        @Override
+        protected void onPause() {
+            super.onPause();
+        }
+
+        /**
+         * Handling new push message, will add the message to
+         * recycler view and scroll it to bottom
+         * */
+        private void handlePushNotification(Intent intent) {
+            String chatRoomId = intent.getStringExtra("chat_room_id");
+        }
+
+        /**
+         * Posting a new message in chat room
+         * will make an http call to our server. Our server again sends the message
+         * to all the devices as push notification
+         * */
+        private void sendMessage() {
+            final String inputmessage = this.inputMessage.getText().toString().trim();
+            Message inputMessage = new Message();
+            inputMessage.setMessage(inputmessage);
+            inputMessage.setId("1");
+            messageArrayList.add(inputMessage);
+            this.inputMessage.setText("");
+            mAdapter.notifyDataSetChanged();
+
+            Thread thread = new Thread(new Runnable(){
+                public void run() {
+                    try {
+
+            ConversationService service = new ConversationService(ConversationService.VERSION_DATE_2016_09_20);
+            service.setUsernameAndPassword("Your Watson service UserName", "Your watson service PassWord");
+
+            MessageRequest newMessage = new MessageRequest.Builder().inputText(inputmessage).build();
+            MessageResponse response = service.message("Your Workspace Id", newMessage).execute();
+            System.out.println(response);
+            Message outMessage=new Message();
+              if(response!=null)
+              {
+                  if(response.getOutput()!=null && response.getOutput().containsKey("text"))
+                  {
+
+                      final String outputmessage = response.getOutput().get("text").toString().replace("[","").replace("]","");
+                      System.out.println("responsedIN" + outputmessage);
+                      outMessage.setMessage(outputmessage);
+                      outMessage.setId("2");
+                      messageArrayList.add(outMessage);
+                  }
+                  else
+                  {
+                      outMessage.setMessage("Please check your network connectivity");
+                      outMessage.setId("2");
+                      messageArrayList.add(outMessage);
+                  }
+                  runOnUiThread(new Runnable() {
+                      public void run() {
+                          mAdapter.notifyDataSetChanged();
+                         if (mAdapter.getItemCount() > 1) {
+                              recyclerView.getLayoutManager().smoothScrollToPosition(recyclerView, null, mAdapter.getItemCount()-1);
+
+                          }
+
+                      }
+                  });
+              }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+
+            thread.start();
+        }
+    }
+   ```
+
+* Right click on com.example.vmac.watbot package and select New -> Java Class and name it as <strong>Message</strong>
+
+   <p>Add the Following code to the class,</p>
+
+   ```
+    import java.io.Serializable;
+
+    public class Message implements Serializable {
+        String id, message;
+
+        public Message() {
+        }
+
+        public Message(String id, String message, String createdAt) {
+            this.id = id;
+            this.message = message;
+        }
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public String getMessage() {
+            return message;
+        }
+
+        public void setMessage(String message) {
+            this.message = message;
+        }
+    }
+
+   ```
+
+* Right click on com.example.vmac.watbot package and select New -> Java Class and name it as <strong>ChatRoomThreadAdapter</strong>
+
+  <p>Add the following code to the class,</p>
+
+  ```
+    import android.support.v7.widget.RecyclerView;
+    import android.view.LayoutInflater;
+    import android.view.View;
+    import android.view.ViewGroup;
+    import android.widget.TextView;
+
+    import java.util.ArrayList;
+
+    public class ChatRoomThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
+        private int SELF = 100;
+        private ArrayList<Message> messageArrayList;
+
+        public class ViewHolder extends RecyclerView.ViewHolder {
+            TextView message;
+
+            public ViewHolder(View view) {
+                super(view);
+                message = (TextView) itemView.findViewById(R.id.message);
+            }
+        }
+
+        public ChatRoomThreadAdapter(ArrayList<Message> messageArrayList) {
+            this.messageArrayList=messageArrayList;
+        }
+
+        @Override
+        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View itemView;
+
+            // view type is to identify where to render the chat message
+            // left or right
+            if (viewType == SELF) {
+                // self message
+                itemView = LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.chat_item_self, parent, false);
+            } else {
+                // WatBot message
+                itemView = LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.chat_item_watson2, parent, false);
+            }
+            return new ViewHolder(itemView);
+        }
+
+        @Override
+        public int getItemViewType(int position) {
+            Message message = messageArrayList.get(position);
+            if (message.getId().equals("1")) {
+                return SELF;
+            }
+
+            return position;
+        }
+
+        @Override
+        public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
+            Message message = messageArrayList.get(position);
+            message.setMessage(message.getMessage());
+            ((ViewHolder) holder).message.setText(message.getMessage());
+            }
+
+        @Override
+        public int getItemCount() {
+                return messageArrayList.size();
+        }
+    }
+  ```
+
+## Configure the App
+
+  <p>To configure  the App you need to get the Watson Conversation service <strong>Username</strong>, <strong>PassWord</strong> and <strong>WorkSpaceId</strong></p>
+
+* In the <strong>MainActivity</strong> class locate the function named <strong>sendMessage()</strong>.
+
+   ```
+     ConversationService service = new ConversationService(ConversationService.VERSION_DATE_2016_09_20);
+
+     service.setUsernameAndPassword("Your Watson service UserName", "Your watson service PassWord");
+
+     MessageRequest newMessage = new MessageRequest.Builder().inputText(inputmessage).build();
+
+     MessageResponse response = service.message("Your Workspace Id", newMessage).execute();
+   ```
+
+* Go to the Conversation service , and select the <strong>Service Credentials</strong> tab. Select <strong>password</strong> and <strong>username</strong>.
+
+![Conversation Credentials](https://github.com/VidyasagarMSC/WatBot/blob/initial/Images/usernamePassword.png)
+
+ </p>Add the `password` and `username` in the following code,</p>
+
+ ```
+ service.setUsernameAndPassword("Your Watson service UserName", "Your watson service PassWord");
+
+ ```
+
+* Next is to get the <strong>workspace Id</strong>.
+
+<p>Launch the conversation service workspace and from the options select the <strong>View details</strong></p>.
+
+![Conversation workspace1](https://github.com/VidyasagarMSC/WatBot/blob/initial/Images/workspace1.png) ![Conversation workspace2](https://github.com/VidyasagarMSC/WatBot/blob/initial/Images/workspace2.png)
+
+<p>Get the <strong>Workspace ID:</strong> and add it in the below code,</p>
+
+```
+MessageResponse response = service.message("Your Workspace Id", newMessage).execute();
+```
+
+* Build and Run your app.
