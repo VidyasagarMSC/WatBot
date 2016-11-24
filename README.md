@@ -175,6 +175,26 @@ Android Studio is the Official IDE for Android. Android Studio provides the fast
 
 ![Folder location](https://github.com/VidyasagarMSC/WatBot/blob/initial/Images/Screen%20Shot%202016-11-23%20at%209.54.45%20PM.png)
 
+* Once gradle build is successful, Click Project on the left pane and navigate to **Gradle Scripts -> build.gradle(Module: app)** and check the <strong>dependencies</strong> for following dependencies.
+
+```
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    compile 'com.android.support:appcompat-v7:24.2.1'
+    compile 'com.android.support:recyclerview-v7:24.1.1'
+    compile 'com.android.support:design:24.1.1'
+    compile 'com.squareup.okhttp3:okhttp:3.4.2'
+    compile 'com.google.code.gson:gson:2.8.0'
+    compile 'com.ibm.watson.developer_cloud:conversation:3.5.1'
+    testCompile 'junit:junit:4.12'
+
+}
+```
+<p>Do a gradle build</p>
+
 * Once gradle build is successful, Click Project on the left pane and navigate to app -> java
 
 * Go to the com.example.vmac.watbot - > MainActivity
