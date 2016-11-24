@@ -165,14 +165,14 @@ Android Studio is the Official IDE for Android. Android Studio provides the fast
 <a href="https://github.com/VidyasagarMSC/WatBot/archive/initial.zip" target="_blank">Click here</a> to download the starter code (.Zip). UnZip the code to a folder.
 
 ## Importing the code to Android Studio 
-1. Start Android Studio and close any open Android Studio projects.
-2. From the Android Studio menu click File > New > Import Project.
+* Start Android Studio and close any open Android Studio projects.
+* From the Android Studio menu click File > New > Import Project.
   * Alternatively, from the Welcome screen, click Open an existing Android Studio Project
   
 ![Android Studio Import](https://github.com/VidyasagarMSC/WatBot/blob/initial/Images/Screen%20Shot%202016-11-23%20at%209.53.06%20PM.png)
 
-3. Navigate to the folder where the code is downloaded and click OK
+* Navigate to the folder where the code is downloaded and click OK
 
 ![Folder location](https://github.com/VidyasagarMSC/WatBot/blob/initial/Images/Screen%20Shot%202016-11-23%20at%209.54.45%20PM.png)
 
-4. Once gradle build is successful, Click Project on the left pane and navigate to app -> java
+* Once gradle build is successful, Click Project on the left pane and navigate to app -> java
