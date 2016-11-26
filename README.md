@@ -415,7 +415,7 @@ dependencies {
             } else {
                 // WatBot message
                 itemView = LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.chat_item_watson2, parent, false);
+                        .inflate(R.layout.chat_item_watson, parent, false);
             }
             return new ViewHolder(itemView);
         }
