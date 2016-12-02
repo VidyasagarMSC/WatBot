@@ -1,4 +1,4 @@
-package com.example.vmac.chatbot;
+package com.example.vmac.watbot;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

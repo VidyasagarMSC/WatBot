@@ -1,4 +1,4 @@
-package com.example.vmac.chatbot;
+package com.example.vmac.watbot;
 
 import org.junit.Test;
 
