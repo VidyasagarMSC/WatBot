@@ -205,133 +205,152 @@ dependencies {
    <p>Replace the existing code with,</p>
 
    ```
-    import android.content.Intent;
-    import android.os.Bundle;
-    import android.support.v7.app.AppCompatActivity;
-    import android.support.v7.widget.DefaultItemAnimator;
-    import android.support.v7.widget.LinearLayoutManager;
-    import android.support.v7.widget.RecyclerView;
-    import android.view.View;
-    import android.widget.EditText;
-    import android.widget.ImageButton;
+   import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.Toast;
 
-    import com.ibm.watson.developer_cloud.conversation.v1.ConversationService;
-    import com.ibm.watson.developer_cloud.conversation.v1.model.MessageRequest;
-    import com.ibm.watson.developer_cloud.conversation.v1.model.MessageResponse;
+import com.ibm.watson.developer_cloud.conversation.v1.ConversationService;
+import com.ibm.watson.developer_cloud.conversation.v1.model.MessageRequest;
+import com.ibm.watson.developer_cloud.conversation.v1.model.MessageResponse;
 
-    import java.util.ArrayList;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
-    public class MainActivity extends AppCompatActivity {
 
-        private String chatRoomId;
-        private RecyclerView recyclerView;
-        private ChatRoomThreadAdapter mAdapter;
-        private ArrayList messageArrayList;
-        private EditText inputMessage;
-        private ImageButton btnSend;
+public class MainActivity extends AppCompatActivity {
 
-        @Override
-        protected void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_main);
-            inputMessage = (EditText) findViewById(R.id.message);
-            btnSend = (ImageButton) findViewById(R.id.btn_send);
 
-            recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+    private RecyclerView recyclerView;
+    private ChatAdapter mAdapter;
+    private ArrayList messageArrayList;
+    private EditText inputMessage;
+    private ImageButton btnSend;
+    private Map<String,Object> context = new HashMap<>();
 
-            messageArrayList = new ArrayList<>();
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
-            mAdapter = new ChatRoomThreadAdapter(messageArrayList);
+        inputMessage = (EditText) findViewById(R.id.message);
+        btnSend = (ImageButton) findViewById(R.id.btn_send);
 
-            LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-            layoutManager.setStackFromEnd(true);
-            recyclerView.setLayoutManager(layoutManager);
-            recyclerView.setItemAnimator(new DefaultItemAnimator());
-            recyclerView.setAdapter(mAdapter);
 
-            btnSend.setOnClickListener(new View.OnClickListener(){
-                @Override
-                public void onClick(View v) {
+        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+
+        messageArrayList = new ArrayList<>();
+        mAdapter = new ChatAdapter(messageArrayList);
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager.setStackFromEnd(true);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(mAdapter);
+
+        btnSend.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                if(checkInternetConnection()) {
                     sendMessage();
                 }
-            });
-        };
+            }
+        });
+    };
 
-        @Override
-        protected void onPause() {
-            super.onPause();
-        }
 
-        /**
-         * Handling new push message, will add the message to
-         * recycler view and scroll it to bottom
-         * */
-        private void handlePushNotification(Intent intent) {
-            String chatRoomId = intent.getStringExtra("chat_room_id");
-        }
+    // Sending a message to Watson Conversation Service
+    private void sendMessage() {
+        final String inputmessage = this.inputMessage.getText().toString().trim();
+        Message inputMessage = new Message();
+        inputMessage.setMessage(inputmessage);
+        inputMessage.setId("1");
+        messageArrayList.add(inputMessage);
+        this.inputMessage.setText("");
+        mAdapter.notifyDataSetChanged();
 
-        /**
-         * Posting a new message in chat room
-         * will make an http call to our server. Our server again sends the message
-         * to all the devices as push notification
-         * */
-        private void sendMessage() {
-            final String inputmessage = this.inputMessage.getText().toString().trim();
-            Message inputMessage = new Message();
-            inputMessage.setMessage(inputmessage);
-            inputMessage.setId("1");
-            messageArrayList.add(inputMessage);
-            this.inputMessage.setText("");
-            mAdapter.notifyDataSetChanged();
+        Thread thread = new Thread(new Runnable(){
+            public void run() {
+                try {
 
-            Thread thread = new Thread(new Runnable(){
-                public void run() {
-                    try {
+        ConversationService service = new ConversationService(ConversationService.VERSION_DATE_2016_09_20);
+        service.setUsernameAndPassword("<username>", "<password>");
+        MessageRequest newMessage = new MessageRequest.Builder().inputText(inputmessage).context(context).build();
+        MessageResponse response = service.message("<workspace_id>", newMessage).execute();
 
-            ConversationService service = new ConversationService(ConversationService.VERSION_DATE_2016_09_20);
-            service.setUsernameAndPassword("Your Watson service UserName", "Your watson service PassWord");
+                if(response.getContext() !=null)
+                    {
+                        context.clear();
+                        context = response.getContext();
 
-            MessageRequest newMessage = new MessageRequest.Builder().inputText(inputmessage).build();
-            MessageResponse response = service.message("Your Workspace Id", newMessage).execute();
-            System.out.println(response);
-            Message outMessage=new Message();
-              if(response!=null)
+                    }
+        Message outMessage=new Message();
+          if(response!=null)
+          {
+              if(response.getOutput()!=null && response.getOutput().containsKey("text"))
               {
-                  if(response.getOutput()!=null && response.getOutput().containsKey("text"))
-                  {
 
-                      final String outputmessage = response.getOutput().get("text").toString().replace("[","").replace("]","");
-                      System.out.println("responsedIN" + outputmessage);
-                      outMessage.setMessage(outputmessage);
-                      outMessage.setId("2");
-                      messageArrayList.add(outMessage);
-                  }
-                  else
-                  {
-                      outMessage.setMessage("Please check your network connectivity");
-                      outMessage.setId("2");
-                      messageArrayList.add(outMessage);
-                  }
-                  runOnUiThread(new Runnable() {
-                      public void run() {
-                          mAdapter.notifyDataSetChanged();
-                         if (mAdapter.getItemCount() > 1) {
-                              recyclerView.getLayoutManager().smoothScrollToPosition(recyclerView, null, mAdapter.getItemCount()-1);
+                  final String outputmessage = response.getOutput().get("text").toString().replace("[","").replace("]","");
+                  outMessage.setMessage(outputmessage);
+                  outMessage.setId("2");
+                  messageArrayList.add(outMessage);
+              }
 
-                          }
+              runOnUiThread(new Runnable() {
+                  public void run() {
+                      mAdapter.notifyDataSetChanged();
+                     if (mAdapter.getItemCount() > 1) {
+                          recyclerView.getLayoutManager().smoothScrollToPosition(recyclerView, null, mAdapter.getItemCount()-1);
 
                       }
-                  });
-              }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
 
-            thread.start();
-        }
+                  }
+              });
+
+
+          }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        thread.start();
+
     }
+
+    private boolean checkInternetConnection() {
+        // get Connectivity Manager object to check connection
+        ConnectivityManager cm =
+                (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null &&
+                activeNetwork.isConnectedOrConnecting();
+
+        // Check for network connections
+        if (isConnected){
+            return true;
+        }
+       else {
+            Toast.makeText(this, " No Internet Connection available ", Toast.LENGTH_LONG).show();
+            return false;
+        }
+
+    }
+
+}
+
+
    ```
 
 * Right click on com.example.vmac.watbot package and select New -> Java Class and name it as <strong>Message</strong>
