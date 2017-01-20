@@ -39,3 +39,15 @@ captures/
 # Keystore files
 *.jks
 src/main/res/drawable-w10dp/
+/_mac/
+/inspection/
+/androidEditors.xml
+/colors.scheme.xml
+/ignore.xml
+/web-browsers.xml
+/androidStudioFirstRun.xml
+/filetypes.xml
+/debugger.xml
+/diff.xml
+/IntelliLang.xml
+/ui.lnf.xml
