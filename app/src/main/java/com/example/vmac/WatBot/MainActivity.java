@@ -1,26 +1,43 @@
 package com.example.vmac.WatBot;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.graphics.Typeface;
+import android.media.Image;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.ibm.watson.developer_cloud.android.library.audio.MicrophoneInputStream;
 import com.ibm.watson.developer_cloud.android.library.audio.StreamPlayer;
+import com.ibm.watson.developer_cloud.android.library.audio.utils.ContentType;
 import com.ibm.watson.developer_cloud.conversation.v1.ConversationService;
 import com.ibm.watson.developer_cloud.conversation.v1.model.MessageRequest;
 import com.ibm.watson.developer_cloud.conversation.v1.model.MessageResponse;
+import com.ibm.watson.developer_cloud.http.HttpMediaType;
+import com.ibm.watson.developer_cloud.speech_to_text.v1.SpeechToText;
+import com.ibm.watson.developer_cloud.speech_to_text.v1.model.RecognizeOptions;
+import com.ibm.watson.developer_cloud.speech_to_text.v1.model.SpeechResults;
+import com.ibm.watson.developer_cloud.speech_to_text.v1.websocket.BaseRecognizeCallback;
+import com.ibm.watson.developer_cloud.speech_to_text.v1.websocket.RecognizeCallback;
 import com.ibm.watson.developer_cloud.text_to_speech.v1.TextToSpeech;
 import com.ibm.watson.developer_cloud.text_to_speech.v1.model.Voice;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -34,9 +51,18 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList messageArrayList;
     private EditText inputMessage;
     private ImageButton btnSend;
+    private ImageButton btnRecord;
     private Map<String,Object> context = new HashMap<>();
     StreamPlayer streamPlayer;
     private boolean initialRequest;
+    private boolean permissionToRecordAccepted = false;
+    private static final int REQUEST_RECORD_AUDIO_PERMISSION = 200;
+    private static String TAG = "MainActivity";
+    private static final int RECORD_REQUEST_CODE = 101;
+    private boolean listening = false;
+    private SpeechToText speechService;
+    private MicrophoneInputStream capture;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,10 +71,10 @@ public class MainActivity extends AppCompatActivity {
 
         inputMessage = (EditText) findViewById(R.id.message);
         btnSend = (ImageButton) findViewById(R.id.btn_send);
+        btnRecord= (ImageButton) findViewById(R.id.btn_record);
         String customFont = "Montserrat-Regular.ttf";
         Typeface typeface = Typeface.createFromAsset(getAssets(), customFont);
         inputMessage.setTypeface(typeface);
-
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
         messageArrayList = new ArrayList<>();
@@ -65,7 +91,16 @@ public class MainActivity extends AppCompatActivity {
 
         //Watson Text-to-Speech Service on Bluemix
         final TextToSpeech service = new TextToSpeech();
-        service.setUsernameAndPassword("Your Text-to-Speech service username", "Your Text-to-Speech password");
+        service.setUsernameAndPassword("<username>", "<password>");
+
+        int permission = ContextCompat.checkSelfPermission(this,
+                Manifest.permission.RECORD_AUDIO);
+
+        if (permission != PackageManager.PERMISSION_GRANTED) {
+            Log.i(TAG, "Permission to record denied");
+            makeRequest();
+        }
+
 
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recyclerView, new ClickListener() {
             @Override
@@ -93,6 +128,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onLongClick(View view, int position) {
+                recordMessage();
 
             }
         }));
@@ -105,7 +141,44 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
+        btnRecord.setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View v) {
+                recordMessage();
+            }
+        });
     };
+
+    // Speech to Text Record Audio permission
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode){
+            case REQUEST_RECORD_AUDIO_PERMISSION:
+                permissionToRecordAccepted  = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                break;
+            case RECORD_REQUEST_CODE: {
+
+                if (grantResults.length == 0
+                        || grantResults[0] !=
+                        PackageManager.PERMISSION_GRANTED) {
+
+                    Log.i(TAG, "Permission has been denied by user");
+                } else {
+                    Log.i(TAG, "Permission has been granted by user");
+                }
+                return;
+            }
+        }
+        if (!permissionToRecordAccepted ) finish();
+
+    }
+
+    protected void makeRequest() {
+        ActivityCompat.requestPermissions(this,
+                new String[]{Manifest.permission.RECORD_AUDIO},
+                RECORD_REQUEST_CODE);
+    }
 
     // Sending a message to Watson Conversation Service
     private void sendMessage() {
@@ -135,9 +208,9 @@ public class MainActivity extends AppCompatActivity {
                 try {
 
         ConversationService service = new ConversationService(ConversationService.VERSION_DATE_2016_09_20);
-        service.setUsernameAndPassword("Your Watson service UserName", "Your watson service PassWord");
+        service.setUsernameAndPassword("<UserName>", "<Password>");
         MessageRequest newMessage = new MessageRequest.Builder().inputText(inputmessage).context(context).build();
-        MessageResponse response = service.message("Your Workspace Id", newMessage).execute();
+        MessageResponse response = service.message("<Workspace_id>", newMessage).execute();
 
                     //Passing Context of last conversation
                 if(response.getContext() !=null)
@@ -181,6 +254,34 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private void recordMessage() {
+        //mic.setEnabled(false);
+        speechService = new SpeechToText();
+        speechService.setUsernameAndPassword("<username>", "<password>");
+
+        if(listening != true) {
+            capture = new MicrophoneInputStream(true);
+            new Thread(new Runnable() {
+                @Override public void run() {
+                    try {
+                        speechService.recognizeUsingWebSocket(capture, getRecognizeOptions(), new MicrophoneRecognizeDelegate());
+                    } catch (Exception e) {
+                        showError(e);
+                    }
+                }
+            }).start();
+            listening = true;
+        } else {
+            try {
+                capture.close();
+                listening = false;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
+
     /**
      * Check Internet Connection
      * @return
@@ -205,8 +306,66 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    //Private Methods - Speech to Text
+    private RecognizeOptions getRecognizeOptions() {
+        return new RecognizeOptions.Builder()
+                .continuous(true)
+                .contentType(ContentType.OPUS.toString())
+                .model("en-US_BroadbandModel")
+                .interimResults(true)
+                .inactivityTimeout(2000)
+                .build();
+    }
 
+    private class MicrophoneRecognizeDelegate implements RecognizeCallback {
 
+        @Override
+        public void onTranscription(SpeechResults speechResults) {
+            System.out.println(speechResults);
+            if(speechResults.getResults() != null && !speechResults.getResults().isEmpty()) {
+                String text = speechResults.getResults().get(0).getAlternatives().get(0).getTranscript();
+                showMicText(text);
+            }
+        }
+
+        @Override public void onConnected() {
+
+        }
+
+        @Override public void onError(Exception e) {
+            showError(e);
+            enableMicButton();
+        }
+
+        @Override public void onDisconnected() {
+            enableMicButton();
+        }
+    }
+
+    private void showMicText(final String text) {
+        runOnUiThread(new Runnable() {
+            @Override public void run() {
+                inputMessage.setText(text);
+            }
+        });
+    }
+
+    private void enableMicButton() {
+        runOnUiThread(new Runnable() {
+            @Override public void run() {
+                btnRecord.setEnabled(true);
+            }
+        });
+    }
+
+    private void showError(final Exception e) {
+        runOnUiThread(new Runnable() {
+            @Override public void run() {
+                Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                e.printStackTrace();
+            }
+        });
+    }
 
 }
 
