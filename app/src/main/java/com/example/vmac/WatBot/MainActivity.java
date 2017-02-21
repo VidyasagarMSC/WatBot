@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
 
         //Watson Text-to-Speech Service on Bluemix
         final TextToSpeech service = new TextToSpeech();
-        service.setUsernameAndPassword("<username>", "<password>");
+        service.setUsernameAndPassword("4a8df853-d6ef-4a2d-8ae3-d2f7f6d4315e", "pICFn87UlxPJ");
 
         int permission = ContextCompat.checkSelfPermission(this,
                 Manifest.permission.RECORD_AUDIO);
@@ -208,9 +208,9 @@ public class MainActivity extends AppCompatActivity {
                 try {
 
         ConversationService service = new ConversationService(ConversationService.VERSION_DATE_2016_09_20);
-        service.setUsernameAndPassword("<UserName>", "<Password>");
+        service.setUsernameAndPassword("c2f33c1e-aa31-4a5d-8ee1-a453a21e28f8", "K2wgQmt38ZBO");
         MessageRequest newMessage = new MessageRequest.Builder().inputText(inputmessage).context(context).build();
-        MessageResponse response = service.message("<Workspace_id>", newMessage).execute();
+        MessageResponse response = service.message("f2a5bc02-886b-423b-bc92-5946a8c6f034", newMessage).execute();
 
                     //Passing Context of last conversation
                 if(response.getContext() !=null)
@@ -253,11 +253,11 @@ public class MainActivity extends AppCompatActivity {
         thread.start();
 
     }
-
+    //Record a message via Watson Speech to Text
     private void recordMessage() {
         //mic.setEnabled(false);
         speechService = new SpeechToText();
-        speechService.setUsernameAndPassword("<username>", "<password>");
+        speechService.setUsernameAndPassword("6bc9f995-b1ea-4467-b5fd-3ad0d42c0770", "rgXw5wWM6Hgo");
 
         if(listening != true) {
             capture = new MicrophoneInputStream(true);
@@ -271,10 +271,13 @@ public class MainActivity extends AppCompatActivity {
                 }
             }).start();
             listening = true;
+            Toast.makeText(MainActivity.this,"Listening....Click to Stop", Toast.LENGTH_LONG).show();
+
         } else {
             try {
                 capture.close();
                 listening = false;
+                Toast.makeText(MainActivity.this,"Stopped Listening....Click to Start", Toast.LENGTH_LONG).show();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -311,7 +314,7 @@ public class MainActivity extends AppCompatActivity {
         return new RecognizeOptions.Builder()
                 .continuous(true)
                 .contentType(ContentType.OPUS.toString())
-                .model("en-US_BroadbandModel")
+                //.model("en-UK_NarrowbandModel")
                 .interimResults(true)
                 .inactivityTimeout(2000)
                 .build();
