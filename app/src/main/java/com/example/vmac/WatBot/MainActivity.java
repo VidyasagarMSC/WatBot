@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
 
         //Watson Text-to-Speech Service on Bluemix
         final TextToSpeech service = new TextToSpeech();
-        service.setUsernameAndPassword("4a8df853-d6ef-4a2d-8ae3-d2f7f6d4315e", "pICFn87UlxPJ");
+        service.setUsernameAndPassword("<text-to-speech username>", "text-to-speech password>");
 
         int permission = ContextCompat.checkSelfPermission(this,
                 Manifest.permission.RECORD_AUDIO);
@@ -208,9 +208,9 @@ public class MainActivity extends AppCompatActivity {
                 try {
 
         ConversationService service = new ConversationService(ConversationService.VERSION_DATE_2016_09_20);
-        service.setUsernameAndPassword("c2f33c1e-aa31-4a5d-8ee1-a453a21e28f8", "K2wgQmt38ZBO");
+        service.setUsernameAndPassword("<conversation username>", "<conversation password>");
         MessageRequest newMessage = new MessageRequest.Builder().inputText(inputmessage).context(context).build();
-        MessageResponse response = service.message("f2a5bc02-886b-423b-bc92-5946a8c6f034", newMessage).execute();
+        MessageResponse response = service.message("<conversation workspaceid>", newMessage).execute();
 
                     //Passing Context of last conversation
                 if(response.getContext() !=null)
@@ -257,7 +257,7 @@ public class MainActivity extends AppCompatActivity {
     private void recordMessage() {
         //mic.setEnabled(false);
         speechService = new SpeechToText();
-        speechService.setUsernameAndPassword("6bc9f995-b1ea-4467-b5fd-3ad0d42c0770", "rgXw5wWM6Hgo");
+        speechService.setUsernameAndPassword("<speech-to-text username>", "<speech-to-text password>");
 
         if(listening != true) {
             capture = new MicrophoneInputStream(true);
