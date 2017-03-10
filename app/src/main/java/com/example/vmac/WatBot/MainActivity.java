@@ -36,6 +36,10 @@ import com.ibm.watson.developer_cloud.speech_to_text.v1.websocket.RecognizeCallb
 import com.ibm.watson.developer_cloud.text_to_speech.v1.TextToSpeech;
 import com.ibm.watson.developer_cloud.text_to_speech.v1.model.Voice;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.json.JSONTokener;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -91,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
 
         //Watson Text-to-Speech Service on Bluemix
         final TextToSpeech service = new TextToSpeech();
-        service.setUsernameAndPassword("<text-to-speech username>", "text-to-speech password>");
+        service.setUsernameAndPassword("<Watson Text to Speech username>", "<Watson Text to Speech password>");
 
         int permission = ContextCompat.checkSelfPermission(this,
                 Manifest.permission.RECORD_AUDIO);
@@ -208,9 +212,9 @@ public class MainActivity extends AppCompatActivity {
                 try {
 
         ConversationService service = new ConversationService(ConversationService.VERSION_DATE_2016_09_20);
-        service.setUsernameAndPassword("<conversation username>", "<conversation password>");
+        service.setUsernameAndPassword("<Watson Conversation username>", "<Watson Conversation password>");
         MessageRequest newMessage = new MessageRequest.Builder().inputText(inputmessage).context(context).build();
-        MessageResponse response = service.message("<conversation workspaceid>", newMessage).execute();
+        MessageResponse response = service.message("<Watson Conversation workspace_id>", newMessage).execute();
 
                     //Passing Context of last conversation
                 if(response.getContext() !=null)
@@ -224,10 +228,12 @@ public class MainActivity extends AppCompatActivity {
           {
               if(response.getOutput()!=null && response.getOutput().containsKey("text"))
               {
+                  ArrayList responseList = (ArrayList) response.getOutput().get("text");
+                  if(null !=responseList && responseList.size()>0){
+                      outMessage.setMessage((String)responseList.get(0));
+                      outMessage.setId("2");
+                  }
 
-                  final String outputmessage = response.getOutput().get("text").toString().replace("[","").replace("]","");
-                  outMessage.setMessage(outputmessage);
-                  outMessage.setId("2");
                   messageArrayList.add(outMessage);
               }
 
@@ -257,7 +263,7 @@ public class MainActivity extends AppCompatActivity {
     private void recordMessage() {
         //mic.setEnabled(false);
         speechService = new SpeechToText();
-        speechService.setUsernameAndPassword("<speech-to-text username>", "<speech-to-text password>");
+        speechService.setUsernameAndPassword("<Watson Speech to Text username>", "<Watson Speech to Text password>");
 
         if(listening != true) {
             capture = new MicrophoneInputStream(true);
