@@ -182,6 +182,11 @@ Post branching Intents and entities, this is how my Conversation Dialog on Bluem
 ```
 MessageResponse response = service.message("Your Workspace Id", newMessage).execute();
 ```
+Gradle Entry 
+
+```
+compile 'com.ibm.watson.developer_cloud:conversation:3.6.0'
+```
 
 * Build and Run your app.
 
@@ -201,8 +206,22 @@ Now when you TAP on any message, the text will be heard via a Voice (Voice.EN_LI
 
 <strong>Note: </strong> The required gradle entries for TTS is already included in the build.gradle file 
 ```
-compile 'com.ibm.watson.developer_cloud:text-to-speech:3.5.3'
+compile 'com.ibm.watson.developer_cloud:text-to-speech:3.6.0'
 compile 'com.ibm.watson.developer_cloud:android-sdk:0.2.1'
+```
+
+## Enable Speech to Text
+
+* Create a Watson Speech-To-Text (STT) service on [Bluemix](https://console.ng.bluemix.net/catalog/services/speech-to-text/?taxonomyNavigation=apps) 
+* Navigate to Service Credentials tab and click on "View Credentials".
+* Add the credentials to config.xml
+* Build and Run your app.
+
+<strong>Note: </strong> The required gradle entries for STT is already included in the build.gradle file 
+```
+compile 'com.ibm.watson.developer_cloud:speech-to-text:3.5.3'
+compile 'com.ibm.watson.developer_cloud:android-sdk:0.2.3'
+compile 'com.squareup.okhttp3:okhttp-ws:3.4.2'
 ```
 
 ### Chat with your own WatBot 
