@@ -210,7 +210,7 @@ public class MainActivity extends AppCompatActivity {
         MessageRequest newMessage = new MessageRequest.Builder().inputText(inputmessage).context(context).build();
         MessageResponse response = service.message("<Watson Conversation workspace_id>", newMessage).execute();
 
-                    //Passing Context of last conversation
+               //Passing Context of last conversation
                 if(response.getContext() !=null)
                     {
                         context.clear();
@@ -227,7 +227,6 @@ public class MainActivity extends AppCompatActivity {
                       outMessage.setMessage((String)responseList.get(0));
                       outMessage.setId("2");
                   }
-
                   messageArrayList.add(outMessage);
               }
 
