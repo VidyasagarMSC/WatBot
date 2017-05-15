@@ -5,12 +5,12 @@
 WatBot is an IBM Watson powered ChatBot running on <a href="http://vidyasagarmsc.com/tag/android/" target="_blank">Android</a> and using Conversation Service on IBM <a href="http://vidyasagarmsc.com/category/cloud/" target="_blank">Bluemix</a> (an open standards, cloud platform for building, running, and managing apps and services).
 <p align="center"><img src="images/WatBot_5X.png" width="350" /></p>
 
-Check this [blog post](http://vidyasagarmsc.com/an-android-chatbot-powered-by-ibm-watson/) for step-by-step instructions. 
+Check this [blog post](http://vidyasagarmsc.com/an-android-chatbot-powered-by-ibm-watson/) for step-by-step instructions and also to see it in action.
 
 <h2>Coding the app on Android Studio</h2>
 Android Studio is the Official IDE for Android. Android Studio provides the fastest tools for building apps on every type of Android device.
 
-Clone the repo and import the code in Android Studio,
+Clone the [repo](https://github.com/VidyasagarMSC/WatBot) and import the code in Android Studio,
 
 ```
 git clone https://github.com/VidyasagarMSC/WatBot.git
@@ -148,7 +148,7 @@ Post branching Intents and entities, this is how my Conversation Dialog on Bluem
 * In the <strong>MainActivity</strong> class locate the method named <strong>sendMessage()</strong>.
 
    ```
-     ConversationService service = new ConversationService(ConversationService.VERSION_DATE_2016_09_20);
+     ConversationService service = new ConversationService(ConversationService.VERSION_DATE_2017_02_03);
 
      service.setUsernameAndPassword("Your Watson service UserName", "Your watson service PassWord");
 
@@ -185,7 +185,7 @@ MessageResponse response = service.message("Your Workspace Id", newMessage).exec
 Gradle Entry 
 
 ```
-compile 'com.ibm.watson.developer_cloud:conversation:3.6.0'
+compile 'com.ibm.watson.developer_cloud:conversation:3.8.0'
 ```
 
 * Build and Run your app.
