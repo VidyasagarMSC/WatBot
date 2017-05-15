@@ -206,8 +206,8 @@ Now when you TAP on any message, the text will be heard via a Voice (Voice.EN_LI
 
 <strong>Note: </strong> The required gradle entries for TTS is already included in the build.gradle file 
 ```
-compile 'com.ibm.watson.developer_cloud:text-to-speech:3.6.0'
-compile 'com.ibm.watson.developer_cloud:android-sdk:0.2.1'
+compile 'com.ibm.watson.developer_cloud:text-to-speech:3.8.0'
+compile 'com.ibm.watson.developer_cloud:android-sdk:0.2.3'
 ```
 
 ## Enable Speech to Text
@@ -219,7 +219,7 @@ compile 'com.ibm.watson.developer_cloud:android-sdk:0.2.1'
 
 <strong>Note: </strong> The required gradle entries for STT is already included in the build.gradle file 
 ```
-compile 'com.ibm.watson.developer_cloud:speech-to-text:3.5.3'
+compile 'com.ibm.watson.developer_cloud:speech-to-text:3.8.0'
 compile 'com.ibm.watson.developer_cloud:android-sdk:0.2.3'
 compile 'com.squareup.okhttp3:okhttp-ws:3.4.2'
 ```

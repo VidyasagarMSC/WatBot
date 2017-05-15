@@ -205,7 +205,7 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 try {
 
-        ConversationService service = new ConversationService(ConversationService.VERSION_DATE_2016_09_20);
+        ConversationService service = new ConversationService(ConversationService.VERSION_DATE_2017_02_03);
         service.setUsernameAndPassword("<Watson Conversation username>", "<Watson Conversation password>");
         MessageRequest newMessage = new MessageRequest.Builder().inputText(inputmessage).context(context).build();
         MessageResponse response = service.message("<Watson Conversation workspace_id>", newMessage).execute();
@@ -345,7 +345,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onInactivityTimeout(RuntimeException runtimeException) {
-            
+
         }
 
         @Override
