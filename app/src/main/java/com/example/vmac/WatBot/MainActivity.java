@@ -60,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean listening = false;
     private SpeechToText speechService;
     private MicrophoneInputStream capture;
+    private SpeakerLabelsDiarization.RecoTokens recoTokens;
 
 
     @Override
@@ -316,6 +317,8 @@ public class MainActivity extends AppCompatActivity {
                 //.model("en-UK_NarrowbandModel")
                 .interimResults(true)
                 .inactivityTimeout(2000)
+                //TODO: Uncomment this to enable Speaker Diarization
+                //.speakerLabels(true)
                 .build();
     }
 
@@ -324,6 +327,15 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onTranscription(SpeechResults speechResults) {
             System.out.println(speechResults);
+            //TODO: Uncomment this to enable Speaker Diarization
+            /*recoTokens = new SpeakerLabelsDiarization.RecoTokens();
+            if(speechResults.getSpeakerLabels() !=null)
+            {
+                recoTokens.add(speechResults);
+                Log.i("SPEECHRESULTS",speechResults.getSpeakerLabels().get(0).toString());
+
+
+            }*/
             if(speechResults.getResults() != null && !speechResults.getResults().isEmpty()) {
                 String text = speechResults.getResults().get(0).getAlternatives().get(0).getTranscript();
                 showMicText(text);
