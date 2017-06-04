@@ -364,6 +364,11 @@ public class MainActivity extends AppCompatActivity {
         public void onListening() {
 
         }
+
+        @Override
+        public void onTranscriptionComplete() {
+
+        }
     }
 
     private void showMicText(final String text) {

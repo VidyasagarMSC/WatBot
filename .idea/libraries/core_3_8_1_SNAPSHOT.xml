@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="core-3.8.1-SNAPSHOT">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.ibm.watson.developer_cloud/core/3.8.1-SNAPSHOT/df820cc72addbec5d0af19d89977d144ad761729/core-3.8.1-SNAPSHOT.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.ibm.watson.developer_cloud/core/3.8.1-SNAPSHOT/cc7a27a846e4baaf0adf22aaa1d000d3946be7ec/core-3.8.1-SNAPSHOT-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
