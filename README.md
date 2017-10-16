@@ -2,10 +2,10 @@
 
 [![Build Status](https://travis-ci.org/VidyasagarMSC/WatBot.svg?branch=master)](https://travis-ci.org/VidyasagarMSC/WatBot)
 
-WatBot is an IBM Watson powered ChatBot running on <a href="http://vidyasagarmsc.com/tag/android/" target="_blank">Android</a> and using Conversation Service on IBM <a href="http://vidyasagarmsc.com/category/cloud/" target="_blank">Bluemix</a> (an open standards, cloud platform for building, running, and managing apps and services).
+WatBot is an IBM Watson powered ChatBot running on <a href="https://vmacwrites.wordpress.com/category/android/" target="_blank">Android</a> and using Conversation Service on IBM <a href="https://vmacwrites.wordpress.com/category/cloud/" target="_blank">Bluemix</a> (an open standards, cloud platform for building, running, and managing apps and services).
 <p align="center"><img src="images/WatBot_5X.png" width="350" /></p>
 
-Check this [blog post](http://vidyasagarmsc.com/an-android-chatbot-powered-by-ibm-watson/) for step-by-step instructions and also to see it in action.
+Check this [blog post](https://vmacwrites.wordpress.com/2017/01/05/an-android-chatbot-powered-by-ibm-watson/) for step-by-step instructions and also to see it in action.
 
 <h2>Coding the app on Android Studio</h2>
 Android Studio is the Official IDE for Android. Android Studio provides the fastest tools for building apps on every type of Android device.
