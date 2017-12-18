@@ -4,7 +4,6 @@ import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
-import android.media.Image;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -25,10 +24,10 @@ import com.ibm.watson.developer_cloud.android.library.audio.MicrophoneHelper;
 import com.ibm.watson.developer_cloud.android.library.audio.MicrophoneInputStream;
 import com.ibm.watson.developer_cloud.android.library.audio.StreamPlayer;
 import com.ibm.watson.developer_cloud.android.library.audio.utils.ContentType;
-import com.ibm.watson.developer_cloud.conversation.v1.ConversationService;
-import com.ibm.watson.developer_cloud.conversation.v1.model.MessageRequest;
+import com.ibm.watson.developer_cloud.conversation.v1.Conversation;
+import com.ibm.watson.developer_cloud.conversation.v1.model.InputData;
+import com.ibm.watson.developer_cloud.conversation.v1.model.MessageOptions;
 import com.ibm.watson.developer_cloud.conversation.v1.model.MessageResponse;
-import com.ibm.watson.developer_cloud.http.HttpMediaType;
 import com.ibm.watson.developer_cloud.speech_to_text.v1.SpeechToText;
 import com.ibm.watson.developer_cloud.speech_to_text.v1.model.RecognizeOptions;
 import com.ibm.watson.developer_cloud.speech_to_text.v1.model.SpeechResults;
@@ -93,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
 
         //Watson Text-to-Speech Service on Bluemix
         final TextToSpeech service = new TextToSpeech();
-        service.setUsernameAndPassword("<Watson Text to Speech username>", "<Watson Text to Speech password>");
+        service.setUsernameAndPassword("<Text to speech username>", "<Text to Speech password>");
 
         int permission = ContextCompat.checkSelfPermission(this,
                 Manifest.permission.RECORD_AUDIO);
@@ -215,10 +214,12 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 try {
 
-        ConversationService service = new ConversationService(ConversationService.VERSION_DATE_2017_02_03);
-        service.setUsernameAndPassword("<Watson Conversation username>", "<Watson Conversation password>");
-        MessageRequest newMessage = new MessageRequest.Builder().inputText(inputmessage).context(context).build();
-        MessageResponse response = service.message("<Watson Conversation workspace_id>", newMessage).execute();
+        Conversation service = new Conversation(Conversation.VERSION_DATE_2017_05_26);
+        service.setUsernameAndPassword("<Conversation username>", "<Conversation password>");
+
+        InputData input = new InputData.Builder(inputmessage).build();
+        MessageOptions options = new MessageOptions.Builder("<Workspace ID>").input(input).build();
+        MessageResponse response = service.message(options).execute();
 
                //Passing Context of last conversation
                 if(response.getContext() !=null)
@@ -266,7 +267,7 @@ public class MainActivity extends AppCompatActivity {
     private void recordMessage() {
         //mic.setEnabled(false);
         speechService = new SpeechToText();
-        speechService.setUsernameAndPassword("<Watson Speech to Text username>", "<Watson Speech to Text password>");
+        speechService.setUsernameAndPassword("<Speech to Text Username>", "<Speach to Text Password>");
 
         if(listening != true) {
             capture = microphoneHelper.getInputStream(true);
@@ -321,7 +322,6 @@ public class MainActivity extends AppCompatActivity {
     //Private Methods - Speech to Text
     private RecognizeOptions getRecognizeOptions() {
         return new RecognizeOptions.Builder()
-                .continuous(true)
                 .contentType(ContentType.OPUS.toString())
                 //.model("en-UK_NarrowbandModel")
                 .interimResults(true)
@@ -331,7 +331,7 @@ public class MainActivity extends AppCompatActivity {
                 .build();
     }
 
-    private class MicrophoneRecognizeDelegate implements RecognizeCallback {
+    private class MicrophoneRecognizeDelegate extends BaseRecognizeCallback {
 
         @Override
         public void onTranscription(SpeechResults speechResults) {
