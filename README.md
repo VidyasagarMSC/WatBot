@@ -2,10 +2,10 @@
 
 [![Build Status](https://travis-ci.org/VidyasagarMSC/WatBot.svg?branch=master)](https://travis-ci.org/VidyasagarMSC/WatBot)
 
-WatBot is an IBM Watson powered ChatBot running on <a href="http://vidyasagarmsc.com/tag/android/" target="_blank">Android</a> and using Conversation Service on IBM <a href="http://vidyasagarmsc.com/category/cloud/" target="_blank">Bluemix</a> (an open standards, cloud platform for building, running, and managing apps and services).
+WatBot is an IBM Watson powered ChatBot running on <a href="https://vmacwrites.wordpress.com/category/android/" target="_blank">Android</a> and using Conversation Service on IBM <a href="https://vmacwrites.wordpress.com/category/cloud/" target="_blank">Cloud</a> (an open standards, cloud platform for building, running, and managing apps and services).
 <p align="center"><img src="images/WatBot_5X.png" width="350" /></p>
 
-Check this [blog post](http://vidyasagarmsc.com/an-android-chatbot-powered-by-ibm-watson/) for step-by-step instructions and also to see it in action.
+Check this [blog post](https://vmacwrites.wordpress.com/2017/01/05/an-android-chatbot-powered-by-ibm-watson/) for step-by-step instructions and also to see it in action.
 
 <h2>Coding the app on Android Studio</h2>
 Android Studio is the Official IDE for Android. Android Studio provides the fastest tools for building apps on every type of Android device.
@@ -23,12 +23,12 @@ Watson Conversation combines a number of cognitive techniques to help you build 
 ![Watson Conversation Service Overview](https://github.com/VidyasagarMSC/WatBot/blob/initial/Images/Watson_Conversation_Service.png)
 
 <h3>Getting started</h3>
-Before you can start using the Conversation service, log in to IBM® Bluemix® and create a service instance.
+Before you can start using the Conversation service, log in to IBM Cloud and create a service instance.
 <ol>
- 	<li>Log in to Bluemix and navigate to the Conversation service:
+ 	<li>Log in to IBM Cloud and navigate to the Conversation service:
 <ul>
- 	<li>Don’t have Bluemix account? <a title="(Opens in a new tab or window)" href="https://console.ng.bluemix.net/registration/?target=/catalog/services/conversation/" target="_blank">Sign up</a> to create a free trial account.</li>
- 	<li>Have a Bluemix account? Use <a title="(Opens in a new tab or window)" href="https://console.ng.bluemix.net/catalog/services/conversation" target="_blank">this link</a>.</li>
+ 	<li>Don’t have IBM Cloud account? <a title="(Opens in a new tab or window)" href="https://console.ng.bluemix.net/registration/?target=/catalog/services/conversation/" target="_blank">Sign up</a> to create a free trial account.</li>
+ 	<li>Have a IBM Cloud account? Use <a title="(Opens in a new tab or window)" href="https://console.ng.bluemix.net/catalog/services/conversation" target="_blank">this link</a>.</li>
 </ul>
 </li>
  	<li>In the <strong>Service name</strong> field, type a unique name for your new instance of the Conversation service.
@@ -36,11 +36,10 @@ Check the “Pricing Plans” for data limits for the Conversation service</li>
  	<li>Click <strong>Create</strong>. You’ll see details about your new instance in the “Service Details” page.</li>
 </ol>
 
-
 <h3>Creating a Workspace</h3>
-You use the Conversation tool to create workspaces by either creating a new workspace from scratch, or  by importing a workspace from a [JSON](https://github.com/VidyasagarMSC/WatBot/blob/master/sample.json) file. You can also duplicate an existing workspace within the same service instance.
+You use the Conversation tool to create workspaces by either creating a new workspace from scratch, or  by importing a workspace from a <a href="https://github.com/VidyasagarMSC/WatBot/blob/master/sample.json">sample JSON</a> file. You can also duplicate an existing workspace within the same service instance.
 <ol>
- 	<li>If the Service Details page is not already open, click your Conversation service instance on the Bluemix console. (When you create a service instance, the Service Details page displays.)</li>
+ 	<li>If the Service Details page is not already open, click your Conversation service instance on the IBM Cloud console. (When you create a service instance, the Service Details page displays.)</li>
  	<li>On the “Service Details” page, scroll down to <strong>Conversation tooling</strong> and click <strong>Launch tool</strong>.</li>
  	<li>Click <strong>Create</strong> to create a new workspace.</li>
  	<li>Specify the details for the new workspace:
@@ -137,7 +136,7 @@ You use the Conversation tool to create entities. The number of entities, entity
 <h3>Building a Dialog</h3>
 The dialog component of the Conversation service uses the intents and entities that are identified in the user’s input to gather required information and provide a useful response. Your dialog is represented graphically as a tree; create a branch to process each intent that you define.
 
-Post branching Intents and entities, this is how my Conversation Dialog on Bluemix looks like
+Post branching Intents and entities, this is how my Conversation Dialog on IBM Cloud looks like
 
 ![](https://github.com/VidyasagarMSC/WatBot/blob/initial/Images/Conversation_Service_Bluemix.png)
 
@@ -192,7 +191,7 @@ compile 'com.ibm.watson.developer_cloud:conversation:3.8.0'
 
 ## Enable Text to Speech 
 
-* Create a Watson Text to Speech(TTS) service on [Bluemix](https://console.ng.bluemix.net/catalog/services/text-to-speech/?taxonomyNavigation=apps) 
+* Create a Watson Text to Speech(TTS) service on [IBM Cloud](https://console.ng.bluemix.net/catalog/services/text-to-speech/?taxonomyNavigation=apps) 
 * Navigate to Service Credentials tab and click on "View Credentials".
 
 On Line 68 of MainActivity.java, replace the username and password placeholders with the TTS service credentials
@@ -212,7 +211,7 @@ compile 'com.ibm.watson.developer_cloud:android-sdk:0.2.3'
 
 ## Enable Speech to Text
 
-* Create a Watson Speech-To-Text (STT) service on [Bluemix](https://console.ng.bluemix.net/catalog/services/speech-to-text/?taxonomyNavigation=apps) 
+* Create a Watson Speech-To-Text (STT) service on [IBM Cloud](https://console.ng.bluemix.net/catalog/services/speech-to-text/?taxonomyNavigation=apps) 
 * Navigate to Service Credentials tab and click on "View Credentials".
 * Add the credentials to config.xml
 * Build and Run your app.
@@ -230,4 +229,4 @@ If you have followed all the above instructions, you should be happily chatting 
 
 ** Remember your bot will be talking to your Conversation Service (Intents, Entities and Dialog).**
 
-### Don't stop here!!! Keep coding and using Bluemix
+### Don't stop here!!! Keep coding and using IBM Cloud
