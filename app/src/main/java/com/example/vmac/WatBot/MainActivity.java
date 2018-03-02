@@ -36,6 +36,7 @@ import com.ibm.watson.developer_cloud.speech_to_text.v1.websocket.RecognizeCallb
 import com.ibm.watson.developer_cloud.text_to_speech.v1.TextToSpeech;
 import com.ibm.watson.developer_cloud.text_to_speech.v1.model.Voice;
 
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -50,7 +51,8 @@ public class MainActivity extends AppCompatActivity {
     private EditText inputMessage;
     private ImageButton btnSend;
     private ImageButton btnRecord;
-    private Map<String,Object> context = new HashMap<>();
+    //private Map<String,Object> context = new HashMap<>();
+    com.ibm.watson.developer_cloud.conversation.v1.model.Context context = null;
     StreamPlayer streamPlayer;
     private boolean initialRequest;
     private boolean permissionToRecordAccepted = false;
@@ -92,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
 
         //Watson Text-to-Speech Service on Bluemix
         final TextToSpeech service = new TextToSpeech();
-        service.setUsernameAndPassword("<Text to speech username>", "<Text to Speech password>");
+        service.setUsernameAndPassword("Text to Speech username", "Text to Speech password");
 
         int permission = ContextCompat.checkSelfPermission(this,
                 Manifest.permission.RECORD_AUDIO);
@@ -115,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
                             streamPlayer = new StreamPlayer();
                             if(audioMessage != null && !audioMessage.getMessage().isEmpty())
                                 //Change the Voice format and choose from the available choices
-                                streamPlayer.playStream(service.synthesize(audioMessage.getMessage(), Voice.EN_LISA).execute());
+                                streamPlayer.playStream(service.synthesize(audioMessage.getMessage(), Voice.EN_ALLISON).execute());
                             else
                                 streamPlayer.playStream(service.synthesize("No Text Specified", Voice.EN_LISA).execute());
 
@@ -215,16 +217,16 @@ public class MainActivity extends AppCompatActivity {
                 try {
 
         Conversation service = new Conversation(Conversation.VERSION_DATE_2017_05_26);
-        service.setUsernameAndPassword("<Conversation username>", "<Conversation password>");
+        service.setUsernameAndPassword("Conversation username", "Conversation password");
 
         InputData input = new InputData.Builder(inputmessage).build();
-        MessageOptions options = new MessageOptions.Builder("<Workspace ID>").input(input).build();
+        MessageOptions options = new MessageOptions.Builder("Workspace Id").input(input).context(context).build();
         MessageResponse response = service.message(options).execute();
 
                //Passing Context of last conversation
                 if(response.getContext() !=null)
                     {
-                        context.clear();
+                        //context.clear();
                         context = response.getContext();
 
                     }
@@ -267,7 +269,7 @@ public class MainActivity extends AppCompatActivity {
     private void recordMessage() {
         //mic.setEnabled(false);
         speechService = new SpeechToText();
-        speechService.setUsernameAndPassword("<Speech to Text Username>", "<Speach to Text Password>");
+        speechService.setUsernameAndPassword("Speech to Text username", "Speech to Text password");
 
         if(listening != true) {
             capture = microphoneHelper.getInputStream(true);

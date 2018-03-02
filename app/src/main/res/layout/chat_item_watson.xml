@@ -20,7 +20,7 @@
         android:layout_marginRight="5dp"
         android:layout_marginTop="5dp"
         android:background="@drawable/bg_bubble_watbot"
-        android:fontFamily="sans-serif"
+        android:fontFamily="@font/montserrat"
         android:textColor="@android:color/black"
         android:textIsSelectable="true"
         android:textSize="14sp" />
