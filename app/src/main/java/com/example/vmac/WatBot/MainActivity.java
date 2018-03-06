@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
 
         //Watson Text-to-Speech Service on Bluemix
         final TextToSpeech service = new TextToSpeech();
-        service.setUsernameAndPassword("Text to Speech username", "Text to Speech password");
+        service.setUsernameAndPassword("Text to Speech service username", "Text to Speech service password");
 
         int permission = ContextCompat.checkSelfPermission(this,
                 Manifest.permission.RECORD_AUDIO);
@@ -217,10 +217,10 @@ public class MainActivity extends AppCompatActivity {
                 try {
 
         Conversation service = new Conversation(Conversation.VERSION_DATE_2017_05_26);
-        service.setUsernameAndPassword("Conversation username", "Conversation password");
+        service.setUsernameAndPassword("Conversation service username", "Conversation service password");
 
         InputData input = new InputData.Builder(inputmessage).build();
-        MessageOptions options = new MessageOptions.Builder("Workspace Id").input(input).context(context).build();
+        MessageOptions options = new MessageOptions.Builder("Your workspace id").input(input).context(context).build();
         MessageResponse response = service.message(options).execute();
 
                //Passing Context of last conversation
