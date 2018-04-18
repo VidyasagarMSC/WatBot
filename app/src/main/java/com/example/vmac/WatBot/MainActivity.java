@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
         this.initialRequest = true;
         sendMessage();
 
-        //Watson Text-to-Speech Service on Bluemix
+        //Watson Text-to-Speech Service on IBM Cloud
         final TextToSpeech service = new TextToSpeech();
         service.setUsernameAndPassword("Text to Speech service username", "Text to Speech service password");
 
@@ -217,10 +217,10 @@ public class MainActivity extends AppCompatActivity {
                 try {
 
         Conversation service = new Conversation(Conversation.VERSION_DATE_2017_05_26);
-        service.setUsernameAndPassword("Conversation service username", "Conversation service password");
+        service.setUsernameAndPassword("Watson Assistant username", "Watson Assistant password");
 
         InputData input = new InputData.Builder(inputmessage).build();
-        MessageOptions options = new MessageOptions.Builder("Your workspace id").input(input).context(context).build();
+        MessageOptions options = new MessageOptions.Builder("Workspace ID").input(input).context(context).build();
         MessageResponse response = service.message(options).execute();
 
                //Passing Context of last conversation
