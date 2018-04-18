@@ -20,7 +20,7 @@ git clone https://github.com/VidyasagarMSC/WatBot.git
 
 Watson Assistant combines a number of cognitive techniques to help you build and train a bot - defining intents and entities and crafting dialog to simulate Watson Assistant.
 
-![Watson Watson Assistant service Overview](https://github.com/VidyasagarMSC/WatBot/blob/initial/Images/Watson_Conversation_Service.png)
+![Watson Assistant service Overview](https://github.com/VidyasagarMSC/WatBot/blob/initial/Images/Watson_Conversation_Service.png)
 
 <h3>Getting started</h3>
 Before you can start using the Watson Assistant service, log in to IBM Cloud and create a service instance.
@@ -142,7 +142,7 @@ Post branching Intents and entities, this is how my Watson Assistant Dialog on I
 
 ## Configure the App
 
-  <p>To configure  the App you need to get the Watson Watson Assistant service <strong>Username</strong>, <strong>PassWord</strong> and <strong>WorkSpaceId</strong></p>
+  <p>To configure  the App you need to get the Watson Assistant service <strong>Username</strong>, <strong>PassWord</strong> and <strong>WorkSpaceId</strong></p>
 
 * In the <strong>MainActivity</strong> class locate the method named <strong>sendMessage()</strong>.
 
