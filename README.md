@@ -36,7 +36,9 @@ Check the “Pricing Plans” for data limits for the Watson Assistant service</
  	<li>Click <strong>Create</strong>. You’ll see details about your new instance in the “Service Details” page.</li>
 </ol>
 
-<h3>Creating a Workspace</h3>
+<h3>Creating a Workspace (Skill)</h3>
+
+#### Workspaces are now Skills
 You use the Watson Assistant tool to create workspaces by either creating a new workspace from scratch, or  by importing a workspace from a <a href="https://github.com/VidyasagarMSC/WatBot/blob/master/sample.json">sample JSON</a> file. You can also duplicate an existing workspace within the same service instance.
 <ol>
  	<li>If the Service Details page is not already open, click your Watson Assistant service instance on the IBM Cloud console. (When you create a service instance, the Service Details page displays.)</li>
