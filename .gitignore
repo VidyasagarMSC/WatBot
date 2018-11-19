@@ -35,7 +35,7 @@ captures/
 # Intellij
 *.iml
 .idea/workspace.xml
-.idea
+.idea/*
 
 # Keystore files
 *.jks
@@ -54,3 +54,7 @@ src/main/res/drawable-w10dp/
 /ui.lnf.xml
 /gradle.run.settings.xml
 /WatBot.iml
+src/main/res/drawable-hdpi/
+src/main/res/drawable-mdpi/
+src/main/res/drawable-xhdpi/
+src/main/res/drawable-xxhdpi/
