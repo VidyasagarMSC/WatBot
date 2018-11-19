@@ -163,30 +163,27 @@ Post branching Intents and entities, this is how my Watson Assistant Dialog on I
 
  </p>Add the `password` and `username` in the following code,</p>
 
-     ```
+
         assistantservice.setUsernameAndPassword("<ASSISTANT_USERNAME>", "<ASSISTANT_PASSWORD>");
 
-     ```
 
-* Next is to get the <strong>workspace Id</strong>.
 
-<p>Launch the Watson Assistant service workspace and from the options select the <strong>View details</strong>.</p>
+* Next is to get the <strong>Skill ID</strong>.
+
+<p>Launch the Watson Assistant service skill and from the options select the <strong>View details</strong>.</p>
 
 <p align="center">
 <img src="https://github.com/VidyasagarMSC/WatBot/blob/initial/Images/workspace1.png" width="350">
 <img src="https://github.com/VidyasagarMSC/WatBot/blob/initial/Images/workspace2.png" width="350">
 </p>
 
-<p>Get the <strong>Workspace ID:</strong> and add it in the below code,</p>
+<p>Get the <strong>Skill ID:</strong> and add it in the below code,</p>
 
-    ```
        MessageOptions options = new MessageOptions.Builder("<SKILL_ID>").input(input).context(context).build();
-    ```
 Gradle Entry
 
-    ```
     compile 'com.ibm.watson.developer_cloud:assistant:6.9.2'
-    ```
+
 
 * Build and Run your app.
 
@@ -197,19 +194,18 @@ Gradle Entry
 
 On Line 95 of MainActivity.java, replace the username, password and URL placeholders with the TTS service credentials
 
-    ```
         textService.setUsernameAndPassword("apikey", "<TEXT_TO_SPEECH_APIKEY>");
         textService.setEndPoint("<TEXT_TO_SPEECH_URL>");
-    ```
+
 * Build and Run your app.
 
 Now when you TAP on any message, the text will be heard via a Voice (Voice.EN_US_LISAVOICE). You can change the voice formats in the code (Line 120 0f MainActivity.java)
 
 <strong>Note: </strong> The required gradle entries for TTS is already included in the build.gradle file
-    ```
+  ```
     compile 'com.ibm.watson.developer_cloud:text-to-speech:6.9.2'
     compile 'com.ibm.watson.developer_cloud:android-sdk:0.5.0'
-    ```
+  ```
 
 ## Enable Speech to Text
 
@@ -219,10 +215,10 @@ Now when you TAP on any message, the text will be heard via a Voice (Voice.EN_US
 * Build and Run your app.
 
 <strong>Note: </strong> The required gradle entries for STT is already included in the build.gradle file
-    ```
-    compile 'com.ibm.watson.developer_cloud:speech-to-text:6.92'
-    compile 'com.ibm.watson.developer_cloud:android-sdk:0.5.0'
-    ```
+   ```
+        compile 'com.ibm.watson.developer_cloud:speech-to-text:6.92'
+        compile 'com.ibm.watson.developer_cloud:android-sdk:0.5.0'
+   ```
 
 ### Chat with your own WatBot
 
