@@ -3,6 +3,8 @@ dist: trusty
 group: deprecated-2017Q4
 language: android
 jdk: oraclejdk8
+before_install:
+  - yes | sdkmanager "platforms;android-26"
 android:
   components:
     - tools
