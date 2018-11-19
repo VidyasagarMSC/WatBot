@@ -230,4 +230,23 @@ If you have followed all the above instructions, you should be happily chatting 
 
 ** Remember your bot will be talking to your Watson Assistant service (Intents, Entities and Dialog).**
 
+## Additional
+Speaker labels
+
+**Note:** The speaker labels feature is beta functionality that is available for US English, Japanese, and Spanish.
+
+Speaker labels identify which individuals spoke which words in a multi-participant exchange. (Labeling who spoke and when is sometimes referred to as speaker diarization.) You can use the information to develop a person-by-person transcript of an audio stream, such as contact to a call center. Or you can use it to animate an exchange with a conversational robot or avatar. For best performance, use audio that is at least a minute long.
+
+To enable, Click TODO on the bottom tab of Android Studio or search for TODO in MainActivity.java file and uncomment the lines. You should see the output in the logcat as shown below
+
+```
+SPEECHRESULTS: {
+      "confidence": 0.5,
+      "final": false,
+      "from": 1.59,
+      "speaker": 0,
+      "to": 1.82
+    }
+```
+
 ### Don't stop here!!! Keep coding and using IBM Cloud
