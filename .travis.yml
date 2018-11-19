@@ -8,8 +8,8 @@ android:
     - tools
     - platform-tools
     - tools
-    - build-tools-26.0.2
-    - android-26
+    - build-tools-28.0.3
+    - android-${ANDROID_API}
     - extra-android-m2repository
 script:
    - ./gradlew build
