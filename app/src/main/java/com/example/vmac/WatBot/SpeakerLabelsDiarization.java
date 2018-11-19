@@ -4,11 +4,13 @@ package com.example.vmac.WatBot;
  * Created by VMac on 17/05/17.
  */
 
-import com.ibm.watson.developer_cloud.speech_to_text.v1.model.SpeakerLabel;
-import com.ibm.watson.developer_cloud.speech_to_text.v1.model.SpeechAlternative;
-import com.ibm.watson.developer_cloud.speech_to_text.v1.model.SpeechResults;
+import com.ibm.watson.developer_cloud.speech_to_text.v1.model.RecognizeOptions;
+import com.ibm.watson.developer_cloud.speech_to_text.v1.model.SpeakerLabelsResult;
+import com.ibm.watson.developer_cloud.speech_to_text.v1.model.SpeechRecognitionAlternative;
+import com.ibm.watson.developer_cloud.speech_to_text.v1.model.SpeechRecognitionResult;
+import com.ibm.watson.developer_cloud.speech_to_text.v1.model.SpeechRecognitionResults;
 import com.ibm.watson.developer_cloud.speech_to_text.v1.model.SpeechTimestamp;
-import com.ibm.watson.developer_cloud.speech_to_text.v1.model.Transcript;
+import com.ibm.watson.developer_cloud.speech_to_text.v1.websocket.BaseRecognizeCallback;
 import com.ibm.watson.developer_cloud.util.GsonSingleton;
 
 import java.util.ArrayList;
@@ -18,14 +20,14 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 
-
 public class SpeakerLabelsDiarization {
     public static class RecoToken {
         private Double startTime;
         private Double endTime;
-        private Integer speaker;
+        private Long speaker;
         private String word;
         private Boolean spLabelIsFinal;
+
 
         /**
          * Instantiates a new reco token.
@@ -43,9 +45,9 @@ public class SpeakerLabelsDiarization {
          *
          * @param speakerLabel the speaker label
          */
-        RecoToken(SpeakerLabel speakerLabel) {
-            startTime = speakerLabel.getFrom();
-            endTime = speakerLabel.getTo();
+        RecoToken(SpeakerLabelsResult speakerLabel) {
+            startTime = Double.valueOf(speakerLabel.getFrom());
+            endTime = Double.valueOf(speakerLabel.getTo());
             speaker = speakerLabel.getSpeaker();
         }
 
@@ -54,7 +56,7 @@ public class SpeakerLabelsDiarization {
          *
          * @param speechTimestamp the speech timestamp
          */
-        void updateFrom(SpeechTimestamp speechTimestamp) {
+        public void updateFrom(SpeechTimestamp speechTimestamp) {
             word = speechTimestamp.getWord();
         }
 
@@ -63,7 +65,7 @@ public class SpeakerLabelsDiarization {
          *
          * @param speakerLabel the speaker label
          */
-        void updateFrom(SpeakerLabel speakerLabel) {
+        public void updateFrom(SpeakerLabelsResult speakerLabel) {
             speaker = speakerLabel.getSpeaker();
         }
     }
@@ -78,7 +80,7 @@ public class SpeakerLabelsDiarization {
         /**
          * Instantiates a new utterance.
          *
-         * @param speaker the speaker
+         * @param speaker    the speaker
          * @param transcript the transcript
          */
         public Utterance(final Integer speaker, final String transcript) {
@@ -106,12 +108,12 @@ public class SpeakerLabelsDiarization {
          *
          * @param speechResults the speech results
          */
-        public void add(SpeechResults speechResults) {
+        public void add(SpeechRecognitionResults speechResults) {
             if (speechResults.getResults() != null)
                 for (int i = 0; i < speechResults.getResults().size(); i++) {
-                    Transcript transcript = speechResults.getResults().get(i);
-                    if (transcript.isFinal()) {
-                        SpeechAlternative speechAlternative = transcript.getAlternatives().get(0);
+                    SpeechRecognitionResult transcript = speechResults.getResults().get(i);
+                    if (transcript.isFinalResults()) {
+                        SpeechRecognitionAlternative speechAlternative = transcript.getAlternatives().get(0);
 
                         for (int ts = 0; ts < speechAlternative.getTimestamps().size(); ts++) {
                             SpeechTimestamp speechTimestamp = speechAlternative.getTimestamps().get(ts);
@@ -146,23 +148,23 @@ public class SpeakerLabelsDiarization {
          *
          * @param speakerLabel the speaker label
          */
-        public void add(SpeakerLabel speakerLabel) {
+        public void add(SpeakerLabelsResult speakerLabel) {
             RecoToken recoToken = recoTokenMap.get(speakerLabel.getFrom());
             if (recoToken == null) {
                 recoToken = new RecoToken(speakerLabel);
-                recoTokenMap.put(speakerLabel.getFrom(), recoToken);
+                recoTokenMap.put(Double.valueOf(speakerLabel.getFrom()), recoToken);
             } else {
                 recoToken.updateFrom(speakerLabel);
             }
 
-            if (speakerLabel.isFinal()) {
+            if (speakerLabel.isFinalResults()) {
                 markTokensBeforeAsFinal(speakerLabel.getFrom());
                 report();
                 cleanFinal();
             }
         }
 
-        private void markTokensBeforeAsFinal(Double from) {
+        private void markTokensBeforeAsFinal(Float from) {
             Map<Double, RecoToken> recoTokenMap = new LinkedHashMap<>();
 
             for (RecoToken rt : recoTokenMap.values()) {
@@ -179,9 +181,9 @@ public class SpeakerLabelsDiarization {
             Utterance currentUtterance = new Utterance(0, "");
 
             for (RecoToken rt : recoTokenMap.values()) {
-                if (currentUtterance.speaker != rt.speaker) {
+                if (currentUtterance.speaker != Math.toIntExact(rt.speaker)) {
                     uttterances.add(currentUtterance);
-                    currentUtterance = new Utterance(rt.speaker, "");
+                    currentUtterance = new Utterance(Math.toIntExact(rt.speaker), "");
                 }
                 currentUtterance.transcript = currentUtterance.transcript + rt.word + " ";
             }
