@@ -149,13 +149,12 @@ Post branching Intents and entities, this is how my Watson Assistant Dialog on I
 * In the <strong>MainActivity</strong> class locate the method named <strong>sendMessage()</strong>.
 
    ```
-     ConversationService service = new ConversationService(ConversationService.VERSION_DATE_2017_02_03);
-
-     service.setUsernameAndPassword("Your Watson service UserName", "Your watson service PassWord");
-
-     MessageRequest newMessage = new MessageRequest.Builder().inputText(inputmessage).build();
-
-     MessageResponse response = service.message("Your Workspace Id", newMessage).execute();
+     Assistant assistantservice = new Assistant("2018-02-16");
+     assistantservice.setUsernameAndPassword("<ASSISTANT_USERNAME>", "<ASSISTANT_PASSWORD>");
+     InputData input = new InputData.Builder(inputmessage).build();
+     //Worspaces are now Skills
+     MessageOptions options = new MessageOptions.Builder("<SKILL_ID>").input(input).context(context).build();
+     MessageResponse response = assistantservice.message(options).execute();
    ```
 
 * Go to the Watson Assistant service , and select the <strong>Service Credentials</strong> tab. Select <strong>password</strong> and <strong>username</strong>.
@@ -164,10 +163,10 @@ Post branching Intents and entities, this is how my Watson Assistant Dialog on I
 
  </p>Add the `password` and `username` in the following code,</p>
 
- ```
- service.setUsernameAndPassword("Your Watson service UserName", "Your watson service PassWord");
+     ```
+        assistantservice.setUsernameAndPassword("<ASSISTANT_USERNAME>", "<ASSISTANT_PASSWORD>");
 
- ```
+     ```
 
 * Next is to get the <strong>workspace Id</strong>.
 
@@ -180,14 +179,14 @@ Post branching Intents and entities, this is how my Watson Assistant Dialog on I
 
 <p>Get the <strong>Workspace ID:</strong> and add it in the below code,</p>
 
-```
-MessageResponse response = service.message("Your Workspace Id", newMessage).execute();
-```
+    ```
+       MessageOptions options = new MessageOptions.Builder("<SKILL_ID>").input(input).context(context).build();
+    ```
 Gradle Entry
 
-```
-compile 'com.ibm.watson.developer_cloud:conversation:3.8.0'
-```
+    ```
+    compile 'com.ibm.watson.developer_cloud:assistant:6.9.2'
+    ```
 
 * Build and Run your app.
 
@@ -196,34 +195,34 @@ compile 'com.ibm.watson.developer_cloud:conversation:3.8.0'
 * Create a Watson Text to Speech(TTS) service on [IBM Cloud](https://console.ng.bluemix.net/catalog/services/text-to-speech/?taxonomyNavigation=apps)
 * Navigate to Service Credentials tab and click on "View Credentials".
 
-On Line 68 of MainActivity.java, replace the username and password placeholders with the TTS service credentials
+On Line 95 of MainActivity.java, replace the username, password and URL placeholders with the TTS service credentials
 
-```
-service.setUsernameAndPassword("Your Text-to-Speech service username", "Your Text-to-Speech password");
-```
+    ```
+        textService.setUsernameAndPassword("apikey", "<TEXT_TO_SPEECH_APIKEY>");
+        textService.setEndPoint("<TEXT_TO_SPEECH_URL>");
+    ```
 * Build and Run your app.
 
-Now when you TAP on any message, the text will be heard via a Voice (Voice.EN_LISA). You can change the voice formats in the code (Lines 82-84 0f MainActivity.java)
+Now when you TAP on any message, the text will be heard via a Voice (Voice.EN_US_LISAVOICE). You can change the voice formats in the code (Line 120 0f MainActivity.java)
 
 <strong>Note: </strong> The required gradle entries for TTS is already included in the build.gradle file
-```
-compile 'com.ibm.watson.developer_cloud:text-to-speech:3.8.0'
-compile 'com.ibm.watson.developer_cloud:android-sdk:0.2.3'
-```
+    ```
+    compile 'com.ibm.watson.developer_cloud:text-to-speech:6.9.2'
+    compile 'com.ibm.watson.developer_cloud:android-sdk:0.5.0'
+    ```
 
 ## Enable Speech to Text
 
 * Create a Watson Speech-To-Text (STT) service on [IBM Cloud](https://console.ng.bluemix.net/catalog/services/speech-to-text/?taxonomyNavigation=apps)
 * Navigate to Service Credentials tab and click on "View Credentials".
-* Add the credentials to config.xml
+* Update lines 274-276 with the credentials.
 * Build and Run your app.
 
 <strong>Note: </strong> The required gradle entries for STT is already included in the build.gradle file
-```
-compile 'com.ibm.watson.developer_cloud:speech-to-text:3.8.0'
-compile 'com.ibm.watson.developer_cloud:android-sdk:0.2.3'
-compile 'com.squareup.okhttp3:okhttp-ws:3.4.2'
-```
+    ```
+    compile 'com.ibm.watson.developer_cloud:speech-to-text:6.92'
+    compile 'com.ibm.watson.developer_cloud:android-sdk:0.5.0'
+    ```
 
 ### Chat with your own WatBot
 
