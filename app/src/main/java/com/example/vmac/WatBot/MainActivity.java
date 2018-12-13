@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
         //Watson Text-to-Speech Service on IBM Cloud
         final TextToSpeech textService = new TextToSpeech();
         //Use "apikey" as username and apikey values as password
-        textService.setUsernameAndPassword("apikey", "<TEXT_TO_SPEECH_APIKEY>");
+        textService.setUsernameAndPassword("apikey", "<TEXT_TO_SPEECH_API_KEY_VALUE>");
         textService.setEndPoint("<TEXT_TO_SPEECH_URL>");
 
         int permission = ContextCompat.checkSelfPermission(this,
@@ -218,13 +218,33 @@ public class MainActivity extends AppCompatActivity {
                 try {
 
         Assistant assistantservice = new Assistant("2018-02-16");
-        assistantservice.setUsernameAndPassword("<ASSISTANT_USERNAME>", "<ASSISTANT_PASSWORD>");
+        //If you like to use USERNAME AND PASSWORD
+        //Your Username: "apikey", password: "<APIKEY_VALUE>"
+        assistantservice.setUsernameAndPassword("apikey", "<API_KEY_VALUE>");
 
+        //TODO: Uncomment this line if you want to use API KEY
+        //assistantservice.setApiKey("<API_KEY_VALUE>");
+
+        //Set endpoint which is the URL. Default value: https://gateway.watsonplatform.net/assistant/api
+        assistantservice.setEndPoint("<ASSISTANT_URL>");
         InputData input = new InputData.Builder(inputmessage).build();
-        //Worspaces are now Skills
-        MessageOptions options = new MessageOptions.Builder("<SKILL_ID>").input(input).context(context).build();
+        //WORKSPACES are now SKILLS
+        MessageOptions options = new MessageOptions.Builder().workspaceId("<WORKSPACE_ID>").input(input).context(context).build();
         MessageResponse response = assistantservice.message(options).execute();
+                    Log.i(TAG, "run: "+response);
 
+                    String outputText = "";
+                    int length=response.getOutput().getText().size();
+                    Log.i(TAG, "run: "+length);
+                    if(length>1) {
+                        for (int i = 0; i < length; i++) {
+                            outputText += '\n' + response.getOutput().getText().get(i).trim();
+                        }
+                    }
+                    else
+                       outputText = response.getOutput().getText().get(0);
+
+                    Log.i(TAG, "run: "+outputText);
                //Passing Context of last conversation
                 if(response.getContext() !=null)
                     {
@@ -239,7 +259,7 @@ public class MainActivity extends AppCompatActivity {
               {
                   ArrayList responseList = (ArrayList) response.getOutput().get("text");
                   if(null !=responseList && responseList.size()>0){
-                      outMessage.setMessage((String)responseList.get(0));
+                      outMessage.setMessage(outputText);
                       outMessage.setId("2");
                   }
                   messageArrayList.add(outMessage);
@@ -271,7 +291,7 @@ public class MainActivity extends AppCompatActivity {
     private void recordMessage() {
         speechService = new SpeechToText();
         //Use "apikey" as username and apikey as your password
-        speechService.setUsernameAndPassword("<SPEECH_TO_TEXT_USERNAME>", "<SPEECH_TO_TEXT_PASSWORD>");
+        speechService.setUsernameAndPassword("apikey", "<SPEECH_TO_TEXT_API_VALUE>");
         //Default: https://stream.watsonplatform.net/text-to-speech/api
         speechService.setEndPoint("<SPEECH_TO_TEXT_URL>");
 

@@ -5,6 +5,7 @@
 WatBot is an IBM Watson powered ChatBot running on <a href="https://vmacwrites.wordpress.com/category/android/" target="_blank">Android</a> and using Watson Assistant service on IBM <a href="https://vmacwrites.wordpress.com/category/cloud/" target="_blank">Cloud</a> (an open standards, cloud platform for building, running, and managing apps and services).
 <p align="center"><img src="images/WatBot_5X.png" width="350" /></p>
 
+**Note:** This app uses Watson Assistant V1 API
 
 <h2>Coding the app on Android Studio</h2>
 Android Studio is the Official IDE for Android. Android Studio provides the fastest tools for building apps on every type of Android device.
@@ -20,38 +21,44 @@ Check this [blog post](https://vmacwrites.wordpress.com/2017/01/05/an-android-ch
 
 ## Configure the App
 
-  <p>To configure  the App you need to get the Watson Assistant service <strong>Username</strong>, <strong>PassWord</strong> and <strong>Skill ID</strong></p>
+  <p>To configure  the App you need to get the Watson Assistant service  <strong>PassWord</strong>, **URL** and <strong>Workspace ID</strong></p>
 
 * In the <strong>MainActivity</strong> class locate the method named <strong>sendMessage()</strong>.
+   On the **Manage** tab of the Assistant service you created, click **Launch tool** > Skills > Click the three vertical dots next to the Skill > View API Details > You can find the Workspace ID, Username and password. If you wish to use API Key directly read the TODO, uncomment the code and replace the Placeholder with the API Key value.
 
+   You can find the **API Key** and URL on the Manage tab or under service credentials.
    ```
-     Assistant assistantservice = new Assistant("2018-02-16");
-     assistantservice.setUsernameAndPassword("<ASSISTANT_USERNAME>", "<ASSISTANT_PASSWORD>");
-     InputData input = new InputData.Builder(inputmessage).build();
-     //Worspaces are now Skills
-     MessageOptions options = new MessageOptions.Builder("<SKILL_ID>").input(input).context(context).build();
-     MessageResponse response = assistantservice.message(options).execute();
+       Assistant assistantservice = new Assistant("2018-02-16");
+        //If you like to use USERNAME AND PASSWORD
+        //Your Username: "apikey", password: "<APIKEY_VALUE>"
+        assistantservice.setUsernameAndPassword("apikey", "<API_KEY_VALUE>");
+
+        //TODO: Uncomment this line if you want to use API KEY
+        //assistantservice.setApiKey("<API_KEY_VALUE>");
+
+        //Set endpoint which is the URL. Default value: https://gateway.watsonplatform.net/assistant/api
+        assistantservice.setEndPoint("<ASSISTANT_URL>");
+        InputData input = new InputData.Builder(inputmessage).build();
+        //WORKSPACES are now SKILLS
+        MessageOptions options = new MessageOptions.Builder().workspaceId("<WORKSPACE_ID>").input(input).context(context).build();
+        MessageResponse response = assistantservice.message(options).execute();
    ```
 
-* Go to the Watson Assistant service , and select the <strong>Service Credentials</strong> tab. Select <strong>password</strong> and <strong>username</strong>.
-
-![Watson Assistant Credentials](https://github.com/VidyasagarMSC/WatBot/blob/initial/Images/usernamePassword.png)
-
- </p>Add the `password` and `username` in the following code,</p>
+ </p>Add the `password` in the following code,</p>
 
 
-        assistantservice.setUsernameAndPassword("<ASSISTANT_USERNAME>", "<ASSISTANT_PASSWORD>");
+        assistantservice.setUsernameAndPassword("apikey", "<ASSISTANT_PASSWORD>");
 
 
 
-* Next is to get the <strong>Skill ID</strong>.
+* Next is to get the <strong>Workspace ID</strong>.
 
-<p>Get the <strong>Skill ID:</strong> and add it in the below code,</p>
+<p>Get the <strong>Workspace ID:</strong> and add it in the below code,</p>
 
        MessageOptions options = new MessageOptions.Builder("<SKILL_ID>").input(input).context(context).build();
 Gradle Entry
 
-    compile 'com.ibm.watson.developer_cloud:assistant:6.9.2'
+    compile 'com.ibm.watson.developer_cloud:assistant:6.11.0'
 
 
 * Build and Run your app.
@@ -61,7 +68,7 @@ Gradle Entry
 * Create a Watson Text to Speech(TTS) service on [IBM Cloud](https://console.ng.bluemix.net/catalog/services/text-to-speech/?taxonomyNavigation=apps)
 * Navigate to Service Credentials tab and click on "View Credentials".
 
-On Line 95 of MainActivity.java, replace the username, password and URL placeholders with the TTS service credentials
+On Line 95 of MainActivity.java, replace the password and URL placeholders with the TTS service credentials
 
         textService.setUsernameAndPassword("apikey", "<TEXT_TO_SPEECH_APIKEY>");
         textService.setEndPoint("<TEXT_TO_SPEECH_URL>");
@@ -72,7 +79,7 @@ Now when you TAP on any message, the text will be heard via a Voice (Voice.EN_US
 
 <strong>Note: </strong> The required gradle entries for TTS is already included in the build.gradle file
   ```
-    compile 'com.ibm.watson.developer_cloud:text-to-speech:6.9.2'
+    compile 'com.ibm.watson.developer_cloud:text-to-speech:6.11.0'
     compile 'com.ibm.watson.developer_cloud:android-sdk:0.5.0'
   ```
 
@@ -85,7 +92,7 @@ Now when you TAP on any message, the text will be heard via a Voice (Voice.EN_US
 
 <strong>Note: </strong> The required gradle entries for STT is already included in the build.gradle file
    ```
-        compile 'com.ibm.watson.developer_cloud:speech-to-text:6.92'
+        compile 'com.ibm.watson.developer_cloud:speech-to-text:6.11.0'
         compile 'com.ibm.watson.developer_cloud:android-sdk:0.5.0'
    ```
 
