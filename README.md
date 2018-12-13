@@ -21,7 +21,7 @@ Check this [blog post](https://vmacwrites.wordpress.com/2017/01/05/an-android-ch
 
 ## Configure the App
 
-  <p>To configure  the App you need to get the Watson Assistant service  <strong>PassWord</strong>, **URL** and <strong>Workspace ID</strong></p>
+  <p>To configure  the App you need to get the Watson Assistant service  <strong>PassWord</strong>, <strong>URL</strong> and <strong>Workspace ID</strong></p>
 
 * In the <strong>MainActivity</strong> class locate the method named <strong>sendMessage()</strong>.
    On the **Manage** tab of the Assistant service you created, click **Launch tool** > Skills > Click the three vertical dots next to the Skill > View API Details > You can find the Workspace ID, Username and password. If you wish to use API Key directly read the TODO, uncomment the code and replace the Placeholder with the API Key value.
